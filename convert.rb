@@ -2,12 +2,12 @@ require 'trollop'
 require 'fileutils'
 
 opts = Trollop::options do
-  opt :archive_url,   "The archive to convert to an RPM",               :type => :string
-  opt :name,          "The name to use for the package",                :type => :string
-  opt :package_version,       "The the version of the software being packages", :type => :integer
-  opt :install_root,  "Where to install the software",                  :default => '/opt'
-  opt :binary_root,   "Where to put symlinks for binaries",             :default => '/usr/local/bin'
-  opt :binaries,      "Binaries to link",                               :type => :strings
+  opt :archive_url,     "The archive to convert to an RPM",               :type => :string
+  opt :name,            "The name to use for the package",                :type => :string
+  opt :package_version, "The the version of the software being packages", :type => :integer
+  opt :install_root,    "Where to install the software",                  :default => '/opt'
+  opt :binary_root,     "Where to put symlinks for binaries",             :default => '/usr/local/bin'
+  opt :binaries,        "Binaries to link",                               :type => :strings
 end
 
 def die_if_option_missing(opts,option)
@@ -20,16 +20,12 @@ die_if_option_missing(opts,:name)
 die_if_option_missing(opts,:package_version)
 die_if_option_missing(opts,:archive_url)
 
-puts "here"
-
 package_url     = opts[:archive_url]
 version_number  = opts[:package_version]
 name            = opts[:name]
 binaries        = opts[:binaries]
 install_root    = opts[:install_root]
 bin_link_root   = opts[:binary_root]
-
-puts "boo"
 
 package_name = File.basename package_url
 temp_root = 'temporary_root'
