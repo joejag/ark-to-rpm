@@ -16,6 +16,8 @@ module ArkToRpm
 end
 EOF
 
+cat lib/ark_to_rpm/version.rb
+
 rake build
 
 fpm -s gem -t rpm --force --iteration ${BUILD_REVISION} pkg/${NAME}-${VERSION_STRING}.gem | tee rpms/fpm.log
