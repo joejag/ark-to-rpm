@@ -22,6 +22,7 @@ fpm -s gem -t rpm --force --iteration ${BUILD_REVISION} pkg/${NAME}-${VERSION_ST
 
 rm -rf ./rpms
 mkdir rpms
+touch rpms/nolog.log
 
 mv rubygem-${NAME}*.rpm rpms
 
