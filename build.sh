@@ -8,6 +8,8 @@ BUILD_REVISION=${GO_PIPELINE_COUNTER:="LocalBuild"}
 
 VERSION_STRING="$MAJOR_VERSION.$MINOR_VERSION.$BUILD_REVISION"
 
+test -d lib/ark_to_rpm || mkdir -p lib/ark_to_rpm
+
 cat <<EOF > lib/ark_to_rpm/version.rb
 module ArkToRpm
   VERSION = "${VERSION_STRING}"
