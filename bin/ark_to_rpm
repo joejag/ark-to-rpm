@@ -4,13 +4,13 @@ require 'trollop'
 require 'ark_to_rpm'
 
 opts = Trollop::options do
-  opt :archive_url, "The archive to convert to an RPM", :type => :string
-  opt :name, "The name to use for the package", :type => :string
-  opt :package_version, "The the version of the software being packages", :type => :string
-  opt :release, "Your version of the RPM - update this if you change any options that you pass to ark_to_rpm", :type => :string
-  opt :install_root, "Where to install the software", :default => '/opt'
-  opt :binary_root, "Where to put symlinks for binaries", :default => '/usr/local/bin'
-  opt :binaries, "Binaries to link - relative paths in the package to be linked and put into the binary root", :type => :strings
+  opt :archive_url, 'The archive to convert to an RPM', :type => :string
+  opt :name, 'The name to use for the package', :type => :string
+  opt :package_version, 'The the version of the software being packages', :type => :string
+  opt :release, 'Your version of the RPM - update this if you change any options that you pass to ark_to_rpm', :type => :string
+  opt :install_root, 'Where to install the software', :default => '/opt'
+  opt :binary_root, 'Where to put symlinks for binaries', :default => '/usr/local/bin'
+  opt :binaries, 'Binaries to link - relative paths in the package to be linked and put into the binary root', :type => :strings
 end
 
 converter = ArkToRpm::Converter.new(opts)

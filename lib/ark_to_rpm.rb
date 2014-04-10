@@ -1,4 +1,4 @@
-require "ark_to_rpm/version"
+require 'ark_to_rpm/version'
 require 'fileutils'
 
 module ArkToRpm
@@ -27,7 +27,7 @@ module ArkToRpm
       clean_and_create_directory(@temp_root)
       download_file(@package_name, @package_url)
 
-      archive_root_directories = get_targz_root_directories(@package_name)
+      archive_root_directories = get_tar_gz_root_directories(@package_name)
       package_directory = archive_root_directories.first
       temp_install_root = File.join(@temp_root, @install_root)
 
@@ -37,7 +37,7 @@ module ArkToRpm
 
       setup_bin_symlinks(package_directory)
 
-      fpm_build = "fpm -t rpm -s dir --force --name #{name} --version #{@version_number} --iteration #{@release} -C #{@temp_root} ./"
+      fpm_build = "fpm -t rpm -s dir --force --name #{@name} --version #{@version_number} --iteration #{@release} -C #{@temp_root} ./"
 
       run_command(fpm_build, 'Building rpm with fpm')
 
@@ -46,7 +46,7 @@ module ArkToRpm
 
     private
     def setup_bin_symlinks(package_directory)
-      if !@binaries.nil?
+      unless @binaries.nil?
         @binaries.each do |binary_relative_path|
 
           binary_name = File.basename(binary_relative_path)
@@ -84,7 +84,7 @@ module ArkToRpm
       `curl -L #{source_url} -o #{target_file_name}` unless File.exists?(target_file_name)
     end
 
-    def get_targz_root_directories(package_name)
+    def get_tar_gz_root_directories(package_name)
       `tar tzf #{package_name} | sed -e 's@/.*@@' | uniq`.split("\n")
     end
 
