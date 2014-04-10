@@ -71,7 +71,7 @@ module ArkToRpm
 
     def make_directory(directory_to_make)
       puts "Making directory: #{directory_to_make}"
-      FileUtils.mkdir(directory_to_make)
+      FileUtils.mkdir_p(directory_to_make)
     end
 
     def clean_and_create_directory(directory)
