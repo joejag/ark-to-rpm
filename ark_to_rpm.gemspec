@@ -22,5 +22,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake"
 
   spec.add_dependency 'fpm'
-  spec.add_dependency 'trollop'
+  spec.add_dependency 'trollop', '~> 0.2'
 end
