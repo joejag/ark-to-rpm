@@ -19,7 +19,10 @@ Or install it yourself as:
 
 ## Usage
 
-Use -h to get help.
+To get help, use:
+
+    $ ark_to_rpm -h
+
 
 ## Contributing
 
@@ -28,4 +31,3 @@ Use -h to get help.
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
->>>>>>> Tom - setting up so that we can build a gem and then an RPM from that. mental
