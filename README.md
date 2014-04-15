@@ -1,7 +1,7 @@
 ark-to-rpm
 ==========
 
-This is a tool to make RPMs from tar gz archives. It's inspired by the ark chef cookbook and the FPM tool.
+This is a tool to make RPMs from tar gz archives. It's inspired by the [Opscode Chef Ark](https://github.com/opscode-cookbooks/ark) and [Jordan Sissel's FPM tool](https://github.com/jordansissel/fpm) - and it relies on the latter.
 
 ## Installation
 
