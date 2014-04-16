@@ -42,6 +42,8 @@ module ArkToRpm
       run_command(fpm_build, 'Building rpm with fpm')
 
       FileUtils.rm_rf @temp_root if File.directory? @temp_root
+
+      FileUtils.rm_rf @package_name
     end
 
     private
