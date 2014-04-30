@@ -112,10 +112,10 @@ module ArkToRpm
 
     def get_archive_root_directories(package_name)
       if is_tar_gz?(package_name)
-        get_archive_root_directories_for_tar_gz(package_name)
+        return get_archive_root_directories_for_tar_gz(package_name)
       end
       if is_zip?(package_name)
-        get_archive_root_directories_for_zip(package_name)
+        return get_archive_root_directories_for_zip(package_name)
       end
     end
 
