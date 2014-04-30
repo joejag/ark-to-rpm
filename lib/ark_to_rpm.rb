@@ -26,6 +26,7 @@ module ArkToRpm
       download_file(@package_name, @package_url)
 
       archive_root_directories = get_archive_root_directories(@package_name)
+
       package_directory = archive_root_directories.first
       temp_install_root = File.join(@temp_root, @install_root)
 
