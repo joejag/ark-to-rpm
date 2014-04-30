@@ -4,8 +4,6 @@ require 'fileutils'
 module ArkToRpm
   class Converter
 
-
-
     def initialize(opts)
       abort_if_option_missing(opts, :name)
       abort_if_option_missing(opts, :package_version)
@@ -27,13 +25,13 @@ module ArkToRpm
       clean_and_create_directory(@temp_root)
       download_file(@package_name, @package_url)
 
-      archive_root_directories = get_tar_gz_root_directories(@package_name)
+      archive_root_directories = get_archive_root_directories(@package_name)
       package_directory = archive_root_directories.first
       temp_install_root = File.join(@temp_root, @install_root)
 
       make_directory(temp_install_root)
 
-      run_command("tar -C #{temp_install_root} -xzf #{@package_name}", 'Unpacking the archive to the temp root')
+      unpack_archive(temp_install_root,@package_name)
 
       setup_bin_symlinks(package_directory)
 
@@ -44,6 +42,31 @@ module ArkToRpm
       FileUtils.rm_rf @temp_root if File.directory? @temp_root
 
       FileUtils.rm_rf @package_name
+    end
+
+    def unpack_archive(temp_install_root,package_name)
+      if is_tar_gz?(package_name)
+        untar_package(package_name, temp_install_root)
+      end
+      if is_zip?(package_name)
+        unzip_package(package_name,temp_install_root)
+      end
+    end
+
+    def is_zip?(package_name)
+      package_name.end_with?('.zip')
+    end
+
+    def is_tar_gz?(package_name)
+      package_name.end_with?('.tar.gz') || package_name.end_with?('.tgz')
+    end
+
+    def unzip_package(package_name, temp_install_root)
+      run_command("unzip -d #{temp_install_root} #{package_name}", 'Unpacking the archive to the temp root')
+    end
+
+    def untar_package(package_name, temp_install_root)
+      run_command("tar -C #{temp_install_root} -xzf #{package_name}", 'Unpacking the archive to the temp root')
     end
 
     private
@@ -86,7 +109,20 @@ module ArkToRpm
       `curl -L #{source_url} -o #{target_file_name}` unless File.exists?(target_file_name)
     end
 
-    def get_tar_gz_root_directories(package_name)
+    def get_archive_root_directories(package_name)
+      if is_tar_gz?(package_name)
+        get_archive_root_directories_for_tar_gz(package_name)
+      end
+      if is_zip?(package_name)
+        get_archive_root_directories_for_zip(package_name)
+      end
+    end
+
+    def get_archive_root_directories_for_zip(package_name)
+      `unzip -l #{package_name} | awk '{print $4}'| grep -v "^Name$" | grep -v "^----$" | grep -v "^$" | sed -e 's@/.*@@' | uniq`.split("\n")
+    end
+
+    def get_archive_root_directories_for_tar_gz(package_name)
       `tar tzf #{package_name} | sed -e 's@/.*@@' | uniq`.split("\n")
     end
 
