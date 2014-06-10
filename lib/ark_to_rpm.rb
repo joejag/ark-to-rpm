@@ -47,12 +47,16 @@ module ArkToRpm
 
     def unpack_archive(temp_install_root,package_name)
       if is_tar_gz?(package_name)
-        untar_package(package_name, temp_install_root)
+        untar_gz_package(package_name, temp_install_root)
       end
       if is_zip?(package_name)
         unzip_package(package_name,temp_install_root)
       end
+      if is_tar_bz2?(package_name)
+        untar_bz2_package(package_name,temp_install_root)
+      end
     end
+
 
     def is_zip?(package_name)
       package_name.end_with?('.zip')
@@ -62,12 +66,20 @@ module ArkToRpm
       package_name.end_with?('.tar.gz') || package_name.end_with?('.tgz')
     end
 
+    def is_tar_bz2?(package_name)
+      package_name.end_with?('.tar.bz2') || package_name.end_with?('.tbz')
+    end
+
     def unzip_package(package_name, temp_install_root)
       run_command("unzip -d #{temp_install_root} #{package_name}", 'Unpacking the archive to the temp root')
     end
 
-    def untar_package(package_name, temp_install_root)
+    def untar_gz_package(package_name, temp_install_root)
       run_command("tar -C #{temp_install_root} -xzf #{package_name}", 'Unpacking the archive to the temp root')
+    end
+
+    def untar_bz2_package(package_name, temp_install_root)
+      run_command("tar -C #{temp_install_root} -xjf #{package_name}", 'Unpacking the archive to the temp root')
     end
 
     private
@@ -117,6 +129,13 @@ module ArkToRpm
       if is_zip?(package_name)
         return get_archive_root_directories_for_zip(package_name)
       end
+      if is_tar_bz2??(package_name)
+        return get_archive_root_directories_for_tar_bz2(package_name)
+      end
+    end
+
+    def get_archive_root_directories_for_tar_bz2(package_name)
+      `tar tjf #{package_name} | sed -e 's@/.*@@' | uniq`.split("\n")
     end
 
     def get_archive_root_directories_for_zip(package_name)
