@@ -17,6 +17,7 @@ module ArkToRpm
       @binaries = opts[:binaries]
       @install_root = opts[:install_root]
       @bin_link_root = opts[:binary_root]
+      @depends = opts[:depends] || []
       @package_name = File.basename @package_location
       @temp_root = 'temporary_root'
     end
@@ -36,7 +37,9 @@ module ArkToRpm
 
       setup_bin_symlinks(package_directory)
 
-      fpm_build = "fpm -t rpm -s dir --force --name #{@name} --version #{@version_number} --iteration #{@release} -C #{@temp_root} ./"
+      depends_string = @depends.map{|dependency| "--depends '#{dependency}'"}.join(' ')
+
+      fpm_build = "fpm -t rpm -s dir --force --name #{@name} #{depends_string} --version #{@version_number} --iteration #{@release} -C #{@temp_root} ./"
 
       run_command(fpm_build, 'Building rpm with fpm')
 

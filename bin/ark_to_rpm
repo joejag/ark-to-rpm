@@ -11,6 +11,7 @@ opts = Trollop::options do
   opt :install_root, 'Where to install the software', :default => '/opt'
   opt :binary_root, 'Where to put symlinks for binaries', :default => '/usr/local/bin'
   opt :binaries, 'Binaries to link - relative paths in the package to be linked and put into the binary root', :type => :strings
+  opt :depends, 'Other packages that this package should depend upon', :type => :strings
 end
 
 converter = ArkToRpm::Converter.new(opts)
