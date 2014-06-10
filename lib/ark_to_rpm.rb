@@ -17,13 +17,13 @@ module ArkToRpm
       @binaries = opts[:binaries]
       @install_root = opts[:install_root]
       @bin_link_root = opts[:binary_root]
-      @package_name = File.basename @package_url
+      @package_name = File.basename @package_location
       @temp_root = 'temporary_root'
     end
 
     def convert
       clean_and_create_directory(@temp_root)
-      fetch_file(@package_name, @package_url)
+      fetch_file(@package_name, @package_location)
 
       archive_root_directories = get_archive_root_directories(@package_name)
 
