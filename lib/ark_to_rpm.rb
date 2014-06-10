@@ -129,7 +129,7 @@ module ArkToRpm
       if is_zip?(package_name)
         return get_archive_root_directories_for_zip(package_name)
       end
-      if is_tar_bz2??(package_name)
+      if is_tar_bz2?(package_name)
         return get_archive_root_directories_for_tar_bz2(package_name)
       end
     end
