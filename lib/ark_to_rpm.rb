@@ -118,7 +118,7 @@ module ArkToRpm
     end
 
     def fetch_file(target_file_name, source_file)
-      if source_file.starts_with? 'http'
+      if source_file.start_with? 'http'
         puts "Downloading #{source_file} to #{target_file_name}"
         `curl -L #{source_file} -o #{target_file_name}` unless File.exists?(target_file_name)
       else
