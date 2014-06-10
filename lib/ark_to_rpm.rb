@@ -10,7 +10,7 @@ module ArkToRpm
       abort_if_option_missing(opts, :archive_url)
       abort_if_option_missing(opts, :release)
 
-      @package_url = opts[:archive_url]
+      @package_location = opts[:archive_url]
       @version_number = opts[:package_version]
       @release = opts[:release]
       @name = opts[:name]
@@ -23,7 +23,7 @@ module ArkToRpm
 
     def convert
       clean_and_create_directory(@temp_root)
-      download_file(@package_name, @package_url)
+      fetch_file(@package_name, @package_url)
 
       archive_root_directories = get_archive_root_directories(@package_name)
 
@@ -117,9 +117,13 @@ module ArkToRpm
       make_directory directory
     end
 
-    def download_file(target_file_name, source_url)
-      puts "Downloading #{source_url} to #{target_file_name}"
-      `curl -L #{source_url} -o #{target_file_name}` unless File.exists?(target_file_name)
+    def fetch_file(target_file_name, source_file)
+      if source_file.starts_with? 'http'
+        puts "Downloading #{source_file} to #{target_file_name}"
+        `curl -L #{source_file} -o #{target_file_name}` unless File.exists?(target_file_name)
+      else
+        FileUtils.cp(source_file,target_file_name)
+      end
     end
 
     def get_archive_root_directories(package_name)
