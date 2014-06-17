@@ -17,6 +17,7 @@ module ArkToRpm
       @binaries = opts[:binaries]
       @install_root = opts[:install_root]
       @bin_link_root = opts[:binary_root]
+      @overlay_directory = opts[:overlay_directory]
       @depends = opts[:depends] || []
       @package_name = File.basename @package_location
       @temp_root = 'temporary_root'
@@ -35,6 +36,10 @@ module ArkToRpm
 
       unpack_archive(temp_install_root,@package_name)
 
+      if @overlay_directory
+        overlay(@overlay_directory, temp_install_root, package_directory)
+      end
+
       setup_bin_symlinks(package_directory)
 
       depends_string = @depends.map{|dependency| "--depends '#{dependency}'"}.join(' ')
@@ -46,6 +51,13 @@ module ArkToRpm
       FileUtils.rm_rf @temp_root if File.directory? @temp_root
 
       FileUtils.rm_rf @package_name
+    end
+
+    def overlay(overlay_directory, temp_install_root,package_directory)
+      target_directory = File.join(temp_install_root, package_directory)
+      puts "Overlaying directory: #{overlay_directory} onto: #{target_directory}"
+      
+      `cp -rf #{File.join(overlay_directory,'*')} #{target_directory}`
     end
 
     def unpack_archive(temp_install_root,package_name)

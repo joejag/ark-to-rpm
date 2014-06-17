@@ -12,6 +12,7 @@ opts = Trollop::options do
   opt :binary_root, 'Where to put symlinks for binaries', :default => '/usr/local/bin'
   opt :binaries, 'Binaries to link - relative paths in the package to be linked and put into the binary root', :type => :strings
   opt :depends, 'Other packages that this package should depend upon', :type => :strings
+  opt :overlay_directory, 'Directory of files to overlay', :type => :string
 end
 
 converter = ArkToRpm::Converter.new(opts)
