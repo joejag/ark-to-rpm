@@ -13,8 +13,8 @@ spec/reports
 test/tmp
 test/version_tmp
 tmp
-lib/ark_to_rpm/version.rb
 .idea
 rpms
 srpms
 *.tar.gz
+*.gem
